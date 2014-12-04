@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
+    compileSdkVersion 14
     buildToolsVersion "21.0.1"
 
     defaultConfig {
         applicationId "k.sviat.vflashlight"
         minSdkVersion 14
-        targetSdkVersion 21
+        targetSdkVersion 14
         versionCode 1
         versionName "1.0"
     }
