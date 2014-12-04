@@ -35,4 +35,12 @@
         android:layout_alignParentLeft="true"
         android:layout_alignRight="@+id/buttonEnableBoth" />
 
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBarScreenBrightness"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/buttonEnableScreen"
+        android:layout_alignParentLeft="true" />
+
 </RelativeLayout>

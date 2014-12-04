@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 public class FlashMain extends Activity {
@@ -22,6 +23,7 @@ public class FlashMain extends Activity {
     private Button mButtonFlash;
 
     private Camera mCamera;
+    private SeekBar mSeekBrightness;
 
 
     @Override
@@ -32,6 +34,7 @@ public class FlashMain extends Activity {
         mButtonBoth = (Button) findViewById(R.id.buttonEnableBoth);
         mButtonScreen = (Button) findViewById(R.id.buttonEnableScreen);
         mButtonFlash = (Button) findViewById(R.id.buttonEnableLed);
+        mSeekBrightness = (SeekBar) findViewById(R.id.seekBarScreenBrightness);
 
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
             Toast.makeText(this, "Your device has no flash.", Toast.LENGTH_SHORT).show();
@@ -58,14 +61,21 @@ public class FlashMain extends Activity {
 
         mButtonScreen.setOnClickListener(new View.OnClickListener() {
             private boolean screenEnabled = false;
-            private float brightness = 0.3F;
+            private float brightness;// = 0.3F;
 
             @Override
             public void onClick(View v) {
                 if (screenEnabled) {
                     turnOffScreen(brightness);
                 } else {
-                    brightness = turnOnScreen();
+                    brightness = mSeekBrightness.getProgress();
+                    if (brightness < 10) {
+                        brightness = 0.1F;
+                    } else {
+                        brightness = brightness / 100.0F;
+                    }
+
+                    brightness = turnOnScreen(brightness);
                 }
 
                 screenEnabled = !screenEnabled;
@@ -79,6 +89,26 @@ public class FlashMain extends Activity {
                 mButtonScreen.performClick();
             }
         });
+
+        mSeekBrightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (progress < 10) progress = 10;
+                turnOnScreen(progress / 100.0F);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+
     }
 
     @Override
@@ -119,7 +149,7 @@ public class FlashMain extends Activity {
         mCamera.stopPreview();
     }
 
-    private float turnOnScreen() {
+    private float turnOnScreen(float brightness) {
         int brightnessMode = 0;
 
         try {
@@ -135,7 +165,7 @@ public class FlashMain extends Activity {
         WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
         float prevBrightness = layoutParams.screenBrightness;
 
-        layoutParams.screenBrightness = 1.0F;
+        layoutParams.screenBrightness = brightness;
         getWindow().setAttributes(layoutParams);
 
         return prevBrightness;
