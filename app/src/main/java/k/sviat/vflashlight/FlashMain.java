@@ -142,22 +142,8 @@ public class FlashMain extends Activity {
     }
 
     private void turnOffScreen(float previousBrightness) {
-     /*   if (previousBrightness == -1.0F) {
-            Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
-            return;
-        }*/
-
         WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
         layoutParams.screenBrightness = previousBrightness;
         getWindow().setAttributes(layoutParams);
     }
-
-/*    private float turnOnBoth() {
-        turnOnScreen();
-        turnOnFlash();
-    }
-
-    private void turnOffBoth(float brightness) {
-        turnOffScreen(brightness);
-    }*/
 }
