@@ -4,5 +4,8 @@
     <string name="app_name">V.FlashLight</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="buttonScreen">Екран</string>
+    <string name="buttonBoth"><![CDATA[Екран & Спалах]]></string>
+    <string name="buttonFlash">Спалах</string>
 
 </resources>

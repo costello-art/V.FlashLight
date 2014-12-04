@@ -3,29 +3,36 @@
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".FlashMain">
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".FlashMain"
+    android:background="#ffffffff">
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Екран"
+        android:text="@string/buttonScreen"
         android:id="@+id/buttonEnableScreen"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@+id/buttonEnableBoth"
+        android:layout_alignParentTop="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Екран &amp; Спалах"
+        android:text="@string/buttonBoth"
         android:id="@+id/buttonEnableBoth"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignRight="@+id/buttonEnableScreen"
+        android:layout_alignParentLeft="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Спалах"
+        android:text="@string/buttonFlash"
         android:id="@+id/buttonEnableLed"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/buttonEnableBoth"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/buttonEnableBoth" />
 
 </RelativeLayout>
