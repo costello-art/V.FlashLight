@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +14,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class FlashMain extends Activity {
+
+    private final String TAG = "FlashMain";
 
     private Button mButtonScreen;
     private Button mButtonBoth;
@@ -55,16 +58,25 @@ public class FlashMain extends Activity {
 
         mButtonScreen.setOnClickListener(new View.OnClickListener() {
             private boolean screenEnabled = false;
+            private float brightness = 0.3F;
 
             @Override
             public void onClick(View v) {
                 if (screenEnabled) {
-                    turnOffScreen();
+                    turnOffScreen(brightness);
                 } else {
-                    turnOnScreen();
+                    brightness = turnOnScreen();
                 }
 
                 screenEnabled = !screenEnabled;
+            }
+        });
+
+        mButtonBoth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mButtonFlash.performClick();
+                mButtonScreen.performClick();
             }
         });
     }
@@ -107,19 +119,45 @@ public class FlashMain extends Activity {
         mCamera.stopPreview();
     }
 
-    private void turnOnScreen() {
+    private float turnOnScreen() {
+        int brightnessMode = 0;
 
+        try {
+            brightnessMode = Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE);
+        } catch (Settings.SettingNotFoundException e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+        if (brightnessMode == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC) {
+            Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+        }
+
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        float prevBrightness = layoutParams.screenBrightness;
+
+        layoutParams.screenBrightness = 1.0F;
+        getWindow().setAttributes(layoutParams);
+
+        return prevBrightness;
     }
 
-    private void turnOffScreen() {
+    private void turnOffScreen(float previousBrightness) {
+     /*   if (previousBrightness == -1.0F) {
+            Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
+            return;
+        }*/
 
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        layoutParams.screenBrightness = previousBrightness;
+        getWindow().setAttributes(layoutParams);
     }
 
-    private void turnOnBoth() {
-
+/*    private float turnOnBoth() {
+        turnOnScreen();
+        turnOnFlash();
     }
 
-    private void turnOffBoth() {
-
-    }
+    private void turnOffBoth(float brightness) {
+        turnOffScreen(brightness);
+    }*/
 }
