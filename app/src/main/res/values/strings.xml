@@ -7,5 +7,7 @@
     <string name="buttonScreen">Екран</string>
     <string name="buttonBoth"><![CDATA[Екран & Спалах]]></string>
     <string name="buttonFlash">Спалах</string>
+    <string name="Fragment1_text">Fragment 1</string>
+    <string name="Fragment2_text">Fragment 2</string>
 
 </resources>
