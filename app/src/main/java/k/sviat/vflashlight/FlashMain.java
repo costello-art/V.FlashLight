@@ -36,13 +36,7 @@ public class FlashMain extends Activity {
         mButtonFlash = (Button) findViewById(R.id.buttonEnableLed);
         mSeekBrightness = (SeekBar) findViewById(R.id.seekBarScreenBrightness);
 
-        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
-            Toast.makeText(this, "Your device has no flash.", Toast.LENGTH_SHORT).show();
-            mButtonFlash.setEnabled(false);
-        } else {
-            Toast.makeText(this, "Your device has flash.", Toast.LENGTH_SHORT).show();
-            mCamera = Camera.open();
-        }
+        tryToInitCamera();
 
         mButtonFlash.setOnClickListener(new View.OnClickListener() {
             private boolean flashEnabled = false;
@@ -109,6 +103,22 @@ public class FlashMain extends Activity {
         });
 
 
+    }
+
+    private void tryToInitCamera() {
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
+            Toast.makeText(this, "Your device has no flash.", Toast.LENGTH_SHORT).show();
+            mButtonFlash.setEnabled(false);
+        } else {
+            Toast.makeText(this, "Your device has flash.", Toast.LENGTH_SHORT).show();
+
+           try {
+               mCamera = Camera.open();
+           }
+           catch (Exception e) {
+               Log.e(TAG, "Camera init failed", e);
+           }
+        }
     }
 
     @Override
